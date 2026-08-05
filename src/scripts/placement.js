@@ -11,7 +11,10 @@
 // never hardcodes slot lists: adding/removing a slot in positions.json is
 // enough for it to appear here, in the palette and on the canvas.
 
-import positions from "./positions.json";
+import fpobPositions from "./fpobPositions.json";
+import rpobPositions from "./rpobPositions.json";
+import modulePositions from "./modulePositions.json";
+import rob3Positions from "./rob3Positions.json";
 
 // Component types the moderator can place. Order fixes palette ordering;
 // the actual slot ids are collected from positions.json by prefix.
@@ -30,11 +33,15 @@ function bySuffix(a, b) {
   return Number(a.split("-")[1]) - Number(b.split("-")[1]);
 }
 
-// All slot ids that belong to a given type prefix, taken from variant 0.
+const POSITIONS_BY_TYPE = {
+  module: modulePositions,
+  rob3: rob3Positions,
+  fpob: fpobPositions,
+  rpob: rpobPositions,
+};
+
 function slotsForType(type) {
-  return Object.keys(positions["0"])
-    .filter((id) => id.startsWith(`${type}-`))
-    .sort(bySuffix);
+  return Object.keys(POSITIONS_BY_TYPE[type]["0"]).sort(bySuffix);
 }
 
 // Placeable types with their slot lists, derived from positions.json.

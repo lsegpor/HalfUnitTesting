@@ -1,0 +1,116 @@
+{
+  "0": {
+    "hv-0": {
+      "top": "552px",
+      "left": "13px",
+      "width": "80px",
+      "height": "150px"
+    },
+    "adapter-0": {
+      "top": "90px",
+      "left": "500px",
+      "width": "80px"
+    },
+    "adapter-1": {
+      "top": "90px",
+      "left": "415px",
+      "width": "80px"
+    },
+    "adapter-2": {
+      "top": "90px",
+      "left": "330px",
+      "width": "80px"
+    },
+    "f3plate-0": {
+      "top": "83px",
+      "left": "260px",
+      "width": "320px"
+    },
+    "cooling-0": {
+      "top": "25px",
+      "left": "12px",
+      "width": "200px"
+    }
+  },
+  "1": {
+    "adapter-0": {
+      "top": "90px",
+      "left": "20px",
+      "width": "80px"
+    },
+    "adapter-1": {
+      "top": "90px",
+      "left": "105px",
+      "width": "80px"
+    },
+    "adapter-2": {
+      "top": "90px",
+      "left": "190px",
+      "width": "80px"
+    },
+    "f3plate-0": {
+      "top": "83px",
+      "left": "20px",
+      "width": "320px"
+    },
+    "cooling-0": {
+      "top": "25px",
+      "left": "388px",
+      "width": "200px"
+    }
+  },
+  "2": {
+    "adapter-0": {
+      "top": "545px",
+      "left": "500px",
+      "width": "80px"
+    },
+    "adapter-1": {
+      "top": "545px",
+      "left": "415px",
+      "width": "80px"
+    },
+    "adapter-2": {
+      "top": "545px",
+      "left": "330px",
+      "width": "80px"
+    },
+    "f3plate-0": {
+      "top": "536px",
+      "left": "260px",
+      "width": "320px"
+    },
+    "cooling-0": {
+      "top": "345px",
+      "left": "12px",
+      "width": "200px"
+    }
+  },
+  "3": {
+    "adapter-0": {
+      "top": "545px",
+      "left": "20px",
+      "width": "80px"
+    },
+    "adapter-1": {
+      "top": "545px",
+      "left": "105px",
+      "width": "80px"
+    },
+    "adapter-2": {
+      "top": "545px",
+      "left": "190px",
+      "width": "80px"
+    },
+    "f3plate-0": {
+      "top": "536px",
+      "left": "20px",
+      "width": "320px"
+    },
+    "cooling-0": {
+      "top": "345px",
+      "left": "388px",
+      "width": "200px"
+    }
+  }
+}

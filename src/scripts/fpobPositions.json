@@ -1,0 +1,90 @@
+{
+  "0": {
+    "fpob-0": {
+      "top": "259px",
+      "left": "50px",
+      "width": "160px"
+    },
+    "fpob-1": {
+      "top": "284px",
+      "left": "50px",
+      "width": "160px"
+    },
+    "fpob-2": {
+      "top": "309px",
+      "left": "50px",
+      "width": "160px"
+    },
+    "fpob-3": {
+      "top": "334px",
+      "left": "50px",
+      "width": "160px"
+    }
+  },
+  "1": {
+    "fpob-0": {
+      "top": "259px",
+      "left": "390px",
+      "width": "160px"
+    },
+    "fpob-1": {
+      "top": "284px",
+      "left": "390px",
+      "width": "160px"
+    },
+    "fpob-2": {
+      "top": "309px",
+      "left": "390px",
+      "width": "160px"
+    },
+    "fpob-3": {
+      "top": "334px",
+      "left": "390px",
+      "width": "160px"
+    }
+  },
+  "2": {
+    "fpob-0": {
+      "top": "432px",
+      "left": "50px",
+      "width": "160px"
+    },
+    "fpob-1": {
+      "top": "407px",
+      "left": "50px",
+      "width": "160px"
+    },
+    "fpob-2": {
+      "top": "382px",
+      "left": "50px",
+      "width": "160px"
+    },
+    "fpob-3": {
+      "top": "357px",
+      "left": "50px",
+      "width": "160px"
+    }
+  },
+  "3": {
+    "fpob-0": {
+      "top": "432px",
+      "left": "390px",
+      "width": "160px"
+    },
+    "fpob-1": {
+      "top": "407px",
+      "left": "390px",
+      "width": "160px"
+    },
+    "fpob-2": {
+      "top": "382px",
+      "left": "390px",
+      "width": "160px"
+    },
+    "fpob-3": {
+      "top": "357px",
+      "left": "390px",
+      "width": "160px"
+    }
+  }
+}

@@ -14,7 +14,11 @@ import { modalDraggingRef } from './scripts/modalDraggingRef'
 import { initAllTasks, defaultCableTasks } from './scripts/taskState'
 import { ROLE_LABELS, ROLES } from './scripts/roles'
 import { PLACEABLE_TYPES, initPlacement } from './scripts/placement'
-import positionsData from './scripts/positions.json'
+import fpobPositions from './scripts/fpobPositions.json'
+import rpobPositions from './scripts/rpobPositions.json'
+import modulePositions from './scripts/modulePositions.json'
+import rob3Positions from './scripts/rob3Positions.json'
+import otherPositions from './scripts/otherPositions.json'
 import RoleSelectScreen from './components/RoleSelectScreen'
 import html2canvas from 'html2canvas'
 
@@ -32,7 +36,11 @@ const PREDEFINED_CABLES = []
 // add/remove slots; placement.js derives the placeable slots from it too.
 // JSON keys are strings, so index POSITIONS by String(variant).
 // ─────────────────────────────────────────────────────────────────────────────
-const POSITIONS = positionsData
+const POSITION_SOURCES = [otherPositions, fpobPositions, rpobPositions, modulePositions, rob3Positions]
+const POSITIONS = ['0', '1', '2', '3'].reduce((acc, v) => {
+  acc[v] = Object.assign({}, ...POSITION_SOURCES.map((src) => src[v]))
+  return acc
+}, {})
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MIRROR CALIBRATION
