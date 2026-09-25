@@ -10,6 +10,10 @@ import CoolingPlate from './components/CoolingPlate'
 import CableLayer from './components/CableLayer'
 import RpobTop from './components/RpobTop'
 import HVPlate from './components/HVPlate'
+import EmptyLadder from './components/EmptyLadder'
+import RailBar from './components/RailBar'
+import RailInfoModal from './components/RailInfoModal'
+import { RAIL_TYPES } from './scripts/railTypes'
 import { modalDraggingRef } from './scripts/modalDraggingRef'
 import { initAllTasks, defaultCableTasks } from './scripts/taskState'
 import { ROLE_LABELS, ROLES } from './scripts/roles'
@@ -21,6 +25,8 @@ import rob3Positions from './scripts/rob3Positions.json'
 import otherPositions from './scripts/otherPositions.json'
 import RoleSelectScreen from './components/RoleSelectScreen'
 import html2canvas from 'html2canvas'
+import LadderModules from './components/LadderModules'
+import { LADDER_IDS, MODULE_SIZES_MM, SIDES, initLadderModules, resizeSizes, sideForVariant } from './scripts/ladderState'
 
 const MIN_SCALE = 0.3
 const MAX_SCALE = 4
@@ -95,23 +101,6 @@ function getMirrorOffset(slotId) {
   }
 
   return { x: 0, y: 0 }
-}
-
-const CANVAS_W = 600
-const CANVAS_H = 715
-
-function mirrorPosition(variant, pos) {
-  if (!pos) return pos
-  const v = Number(variant)
-  const w = parseInt(pos.width)
-  const h = parseInt(pos.height)
-  let left = parseInt(pos.left)
-  let top = parseInt(pos.top)
-
-  if (H_MIRRORED.has(v)) left = CANVAS_W - left - w
-  if (V_MIRRORED.has(v)) top = CANVAS_H - top - h
-
-  return { ...pos, left: `${left}px`, top: `${top}px` }
 }
 
 // Applies the mirror calibration offset to a position object for a variant.
@@ -259,10 +248,9 @@ function GhostSlot({ pos, type, label, onClick }) {
 
 function ComponentCanvas({
   variant, role, tasks, onToggleTask, onAddTask, openModals, onOpenModal, onCloseModal,
-  cables, onSetCables,
-  cableTasks, onToggleCableTask, onAddCableTask,
-  openCableModals, onOpenCableModal, onCloseCableModal,
-  placed, placingType, onPlaceSlot, onRemoveSlot,
+  cables, onSetCables, cableTasks, onToggleCableTask, onAddCableTask, openCableModals,
+  onOpenCableModal, onCloseCableModal, placed, placingType, onPlaceSlot, onRemoveSlot,
+  ladderModules, onOpenRailInfo, ladderTypes, onLadderChange
 }) {
   const innerRef = useRef(null)
   // Raw per-variant positions from positions.json, wrapped so every lookup
@@ -273,10 +261,7 @@ function ComponentCanvas({
   const rawPos = POSITIONS[String(variant)]
   const pos = new Proxy(rawPos, {
     get: (target, key) => {
-      if (key?.startsWith('hv-')) {
-        return mirrorPosition(variant, POSITIONS['0'][key])
-      }
-      if (key?.startsWith('f3plate-') || key?.startsWith('cooling-')) {
+      if (key?.startsWith('f3plate-') || key?.startsWith('cooling-') || key?.startsWith('hv-')) {
         return target[key]
       }
       return adjustForMirror(variant, key, target[key])
@@ -292,6 +277,7 @@ function ComponentCanvas({
   // the component's internal geometry in place.
   const flipH = H_MIRRORED.has(variant)
   const flipV = V_MIRRORED.has(variant)
+  const side = sideForVariant(variant)
 
   // A slot is visible only when it has been placed for this variant.
   // When `placed` is undefined (e.g. export canvases) everything shows.
@@ -386,17 +372,43 @@ function ComponentCanvas({
       )
     : null
 
+  const railPosition = V_MIRRORED.has(variant) ? 'bottom' : 'top'
+
   return (
     <div ref={innerRef} style={{ position: 'relative', transform: 'translate(-50%, -50%)', width: '600px' }}>
       <Nodes variant={variant} />
+
+      <RailBar position={railPosition} zIndex={1} />
 
       <AdapterPlate id={0} {...pos['adapter-0']} zIndex={2} componentId="adapter-0" flipH={flipH} flipV={flipV} />
       <AdapterPlate id={1} {...pos['adapter-1']} zIndex={2} componentId="adapter-1" flipH={flipH} flipV={flipV} />
       <AdapterPlate id={2} {...pos['adapter-2']} zIndex={2} componentId="adapter-2" flipH={flipH} flipV={flipV} />
 
-      <F3PlateTop id={0} {...pos['f3plate-0']} zIndex={1} componentId="f3plate-0" flipH={flipH} flipV={flipV} />
+      <F3PlateTop id={0} {...pos['f3plate-0']} height="96px" zIndex={1} componentId="f3plate-0" flipH={flipH} flipV={flipV} />
       <CoolingPlate id={0} {...pos['cooling-0']} zIndex={1} componentId="cooling-0" flipH={flipH} flipV={flipV} />
       <HVPlate {...pos['hv-0']} zIndex={1} componentId="hv-0" flipH={flipH} flipV={flipV} />
+
+      {LADDER_IDS.map((id) => (
+        <div key={id}>
+          <EmptyLadder
+            {...pos[id]}
+            zIndex={1}
+            componentId={id}
+            flipH={flipH}
+            flipV={flipV}
+            ladderType={ladderTypes[side][id]}
+            onChangeLadder={() => onLadderChange(side, id)}
+          />
+
+          <LadderModules
+            {...pos[id]}
+            sizesMm={ladderModules?.[side]?.[id]?.sizesMm ?? []}
+            zIndex={2}
+            flipH={flipH}
+            flipV={flipV}
+          />
+        </div>
+      ))}
 
       {placedComponents}
       {ghostSlots}
@@ -416,6 +428,7 @@ function ComponentCanvas({
         openCableModals={openCableModals ? openCableModals[variant] : undefined}
         onOpenCableModal={onOpenCableModal ? (cableId) => onOpenCableModal(variant, cableId) : undefined}
         onCloseCableModal={onCloseCableModal ? (cableId) => onCloseCableModal(variant, cableId) : undefined}
+        onOpenRailInfo={onOpenRailInfo}
       />
     </div>
   )
@@ -498,6 +511,34 @@ export default function App() {
   // Currently-selected placeable type in the palette (moderator only), or
   // null when not placing. While set, empty slots of that type show as ghosts.
   const [placingType, setPlacingType] = useState(null)
+  const [ladderPanelSide, setLadderPanelSide] = useState('left')
+
+  const [ladderModules, setLadderModules] = useState(() => initLadderModules())
+
+  const [railConfig, setRailConfig] = useState({ type: RAIL_TYPES[0], distance: '' })
+  const [railInfoOpen, setRailInfoOpen] = useState(false)
+
+  function handleSetLadderCount(side, ladderId, count) {
+    const clamped = Math.max(0, Math.min(10, count))
+    setLadderModules(prev => ({
+      ...prev,
+      [side]: {
+        ...prev[side],
+        [ladderId]: { count: clamped, sizesMm: resizeSizes(prev[side][ladderId].sizesMm, clamped) },
+      },
+    }))
+  }
+
+  function handleSetLadderModuleSize(side, ladderId, index, mm) {
+    setLadderModules(prev => {
+      const sizesMm = [...prev[side][ladderId].sizesMm]
+      sizesMm[index] = mm
+      return {
+        ...prev,
+        [side]: { ...prev[side], [ladderId]: { ...prev[side][ladderId], sizesMm } },
+      }
+    })
+  }
 
   // Places a component into a slot for the given variant.
   function handlePlaceSlot(v, slotId) {
@@ -823,6 +864,28 @@ export default function App() {
     }
   }
 
+  const [ladderTypes, setLadderTypes] = useState(() => ({
+    left: Object.fromEntries(
+      LADDER_IDS.map((id) => [id, 'half'])
+    ),
+    right: Object.fromEntries(
+      LADDER_IDS.map((id) => [id, 'half'])
+    ),
+  }))
+
+  const handleLadderChange = (side, ladderId) => {
+    setLadderTypes((prev) => ({
+      ...prev,
+      [side]: {
+        ...prev[side],
+        [ladderId]:
+          prev[side][ladderId] === 'half'
+            ? 'center'
+            : 'half',
+      },
+    }))
+  }
+
   return (
     <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', position: 'relative', background: '#111' }}>
 
@@ -982,6 +1045,64 @@ export default function App() {
         </div>
       )}
 
+      {role === ROLES.MODERATOR && (
+        <div style={{
+          position: 'fixed', top: 320, right: 16, zIndex: 600,
+          background: '#0d1017', border: '1px solid #2a2f3a',
+          padding: '10px 10px 8px', boxShadow: '0 4px 20px rgba(0,0,0,0.6)',
+          display: 'flex', flexDirection: 'column', gap: 10, width: 170,
+          maxHeight: 'calc(87vh - 340px)', overflowY: 'auto',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#3a4050', letterSpacing: 1 }}>
+              LADDER MODULES
+            </span>
+            <div style={{ display: 'flex', border: '1px solid #2a2f3a' }}>
+              {SIDES.map(s => (
+                <button
+                  key={s}
+                  onClick={() => setLadderPanelSide(s)}
+                  style={{
+                    background: ladderPanelSide === s ? '#0d2233' : 'none',
+                    color: ladderPanelSide === s ? '#00d4ff' : '#4a5060',
+                    border: 'none', fontFamily: 'monospace', fontSize: 8,
+                    letterSpacing: 0.5, padding: '3px 6px', cursor: 'pointer',
+                  }}
+                >
+                  {s.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+          {LADDER_IDS.map(id => {
+            const cfg = ladderModules[ladderPanelSide][id]
+            return (
+              <div key={id} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <span style={{ fontFamily: 'monospace', fontSize: 9, color: '#00d4ff' }}>{id}</span>
+                <input
+                  type="number" min={0} max={10} step={2} value={cfg.count}
+                  onChange={e => handleSetLadderCount(ladderPanelSide, id, Number(e.target.value))}
+                  style={{ width: '100%', background: '#111', color: '#e8ecf4', border: '1px solid #2a2f3a', fontFamily: 'monospace', fontSize: 10 }}
+                />
+                {cfg.sizesMm.map((mm, i) => (
+                  <select
+                    key={i} value={mm}
+                    onChange={e => handleSetLadderModuleSize(ladderPanelSide, id, i, Number(e.target.value))}
+                    style={{ width: '100%', background: '#111', color: '#e8ecf4', border: '1px solid #2a2f3a', fontFamily: 'monospace', fontSize: 9 }}
+                  >
+                    {MODULE_SIZES_MM.map(mmOpt => (
+                      <option key={mmOpt} value={mmOpt}>
+                        {i === 0 ? 'center' : i === cfg.sizesMm.length - 1 ? 'frame' : `#${i}`} — {mmOpt} mm
+                      </option>
+                    ))}
+                  </select>
+                ))}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
       {/* Zoom controls */}
       <div style={{
         position: 'fixed', bottom: 24, right: 24, zIndex: 500,
@@ -1038,6 +1159,9 @@ export default function App() {
                 onSetCables={handleSetCables}
                 placed={placed}
                 placingType={null}
+                ladderModules={ladderModules}
+                ladderTypes={ladderTypes}
+                onLadderChange={handleLadderChange}
               />
             </div>
           </div>
@@ -1074,6 +1198,10 @@ export default function App() {
               placingType={role === ROLES.MODERATOR ? placingType : null}
               onPlaceSlot={handlePlaceSlot}
               onRemoveSlot={handleRemoveSlot}
+              ladderModules={ladderModules}
+              onOpenRailInfo={() => setRailInfoOpen(true)}
+              ladderTypes={ladderTypes}
+              onLadderChange={handleLadderChange}
             />
           ) : (
             // Half mode: top + bottom orientations of the chosen side,
@@ -1105,6 +1233,10 @@ export default function App() {
                       placingType={role === ROLES.MODERATOR ? placingType : null}
                       onPlaceSlot={handlePlaceSlot}
                       onRemoveSlot={handleRemoveSlot}
+                      ladderModules={ladderModules}
+                      onOpenRailInfo={() => setRailInfoOpen(true)}
+                      ladderTypes={ladderTypes}
+                      onLadderChange={handleLadderChange}
                     />
                   </div>
                 </div>
@@ -1113,6 +1245,15 @@ export default function App() {
           )}
         </div>
       </div>
+
+      {railInfoOpen && (
+        <RailInfoModal
+          config={railConfig}
+          onChange={setRailConfig}
+          onClose={() => setRailInfoOpen(false)}
+        />
+      )}
+
     </div>
   )
 }

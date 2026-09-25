@@ -128,7 +128,7 @@ export default function CableLayer({
   role,
   cableTasks, onToggleCableTask, onAddCableTask,
   openCableModals, onOpenCableModal, onCloseCableModal,
-  flipH = false, flipV = false,
+  flipH = false, flipV = false, onOpenRailInfo,
 }) {
   const setCables = onSetCables ?? (() => { })
 
@@ -510,7 +510,10 @@ export default function CableLayer({
 
       {/* Toolbar — cable editing is moderator-only */}
       <div style={{
-        position: 'absolute', bottom: -48, left: 0,
+        position: 'absolute',
+        ...(variant === 2 || variant === 3
+          ? { top: 120, left: 20 }      // top-left / top-right variants
+          : { bottom: 120, left: 20 }), // bottom-left / bottom-right variants
         display: 'flex', gap: 8, alignItems: 'center',
         zIndex: 200,
       }}>
@@ -542,6 +545,19 @@ export default function CableLayer({
             }}
           >
             {mode === 'precise' ? '✕ Cancel' : '+ Precise Connection'}
+          </button>
+        )}
+
+        {canEdit && onOpenRailInfo && (
+          <button
+            onClick={onOpenRailInfo}
+            style={{
+              padding: '4px 10px', borderRadius: 6, fontSize: 12, cursor: 'pointer',
+              background: '#374151',
+              color: '#fff', border: 'none', fontWeight: 600,
+            }}
+          >
+            + Rail Info
           </button>
         )}
 

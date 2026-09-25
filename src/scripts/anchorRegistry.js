@@ -32,7 +32,13 @@ export const ANCHOR_REGISTRY = {
     label: "ROB3",
     img: rob3Img,
     imgAspect: 792.7 / 44.5,
-    anchors: [{ id: "base", label: "Base", xPct: 81, yPct: 40 }],
+    anchors: [
+      { id: "dataConn0", label: "Data Conn 0", xPct: 77, yPct: 20 },
+      { id: "dataConn1", label: "Data Conn 1", xPct: 85, yPct: 20 },
+      { id: "dataConn2", label: "Data Conn 2", xPct: 81, yPct: 65 },
+      { id: "dataConn3", label: "Data Conn 3", xPct: 91, yPct: 65 },
+      { id: "dataConn4", label: "Data Conn 4", xPct: 98, yPct: 65 },
+    ],
   },
   fpob: {
     label: "FPOB",

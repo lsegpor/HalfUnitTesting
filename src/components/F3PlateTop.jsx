@@ -4,9 +4,9 @@ import f3plateImg from '../assets/f3platetop.png'
 // Original PDF size: 1334.27 x 398.835 pts
 const IMG_ASPECT = 1334.27 / 398.835
 
-export default function F3PlateTop({ top = '0px', left = '0px', width = '800px', zIndex = 0, flipH = false, flipV = false }) {
+export default function F3PlateTop({ top = '0px', left = '0px', width = '800px', height, zIndex = 0, flipH = false, flipV = false }) {
   const widthPx = parseInt(width)
-  const heightPx = Math.round(widthPx / IMG_ASPECT)
+  const heightPx = height != null ? parseInt(height) : Math.round(widthPx / IMG_ASPECT)
 
   // Mirrors the plate's own artwork in place across mirrored variants.
   const flipTransform = `scaleX(${flipH ? -1 : 1}) scaleY(${flipV ? -1 : 1})`

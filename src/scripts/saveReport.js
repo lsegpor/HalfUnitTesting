@@ -23,7 +23,6 @@ export function saveReport({ componentId, anchorLabel, tasks }) {
     "  HALF-UNIT GUI — TASK REPORT",
     "═══════════════════════════════════════════════════",
     `  Component : ${componentId}`,
-    `  Anchor    : ${anchorLabel}`,
     `  Date      : ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
     `  Progress  : ${doneTasks.length} / ${tasks.length} tasks completed`,
     "───────────────────────────────────────────────────",

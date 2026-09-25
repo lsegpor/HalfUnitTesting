@@ -1,38 +1,59 @@
 {
   "0": {
     "hv-0": {
-      "top": "552px",
+      "top": "396px",
       "left": "13px",
       "width": "80px",
       "height": "150px"
     },
     "adapter-0": {
       "top": "90px",
-      "left": "500px",
+      "left": "590px",
       "width": "80px"
     },
     "adapter-1": {
       "top": "90px",
-      "left": "415px",
+      "left": "505px",
       "width": "80px"
     },
     "adapter-2": {
       "top": "90px",
-      "left": "330px",
+      "left": "420px",
       "width": "80px"
     },
     "f3plate-0": {
       "top": "83px",
       "left": "260px",
-      "width": "320px"
+      "width": "410px"
     },
     "cooling-0": {
       "top": "25px",
       "left": "12px",
       "width": "200px"
+    },
+    "ladder-0": {
+      "top": "175px",
+      "left": "432px",
+      "width": "55px"
+    },
+    "ladder-1": {
+      "top": "175px",
+      "left": "518px",
+      "width": "55px"
+    },
+    "ladder-2": {
+      "top": "175px",
+      "left": "605px",
+      "width": "55px"
     }
   },
   "1": {
+    "hv-0": {
+      "top": "396px",
+      "left": "595px",
+      "width": "80px",
+      "height": "150px"
+    },
     "adapter-0": {
       "top": "90px",
       "left": "20px",
@@ -51,42 +72,84 @@
     "f3plate-0": {
       "top": "83px",
       "left": "20px",
-      "width": "320px"
+      "width": "410px"
     },
     "cooling-0": {
       "top": "25px",
-      "left": "388px",
+      "left": "474px",
       "width": "200px"
+    },
+    "ladder-0": {
+      "top": "175px",
+      "left": "204px",
+      "width": "55px"
+    },
+    "ladder-1": {
+      "top": "175px",
+      "left": "118px",
+      "width": "55px"
+    },
+    "ladder-2": {
+      "top": "175px",
+      "left": "33px",
+      "width": "55px"
     }
   },
   "2": {
+    "hv-0": {
+      "top": "168px",
+      "left": "13px",
+      "width": "80px",
+      "height": "150px"
+    },
     "adapter-0": {
       "top": "545px",
-      "left": "500px",
+      "left": "590px",
       "width": "80px"
     },
     "adapter-1": {
       "top": "545px",
-      "left": "415px",
+      "left": "505px",
       "width": "80px"
     },
     "adapter-2": {
       "top": "545px",
-      "left": "330px",
+      "left": "420px",
       "width": "80px"
     },
     "f3plate-0": {
       "top": "536px",
       "left": "260px",
-      "width": "320px"
+      "width": "410px"
     },
     "cooling-0": {
       "top": "345px",
       "left": "12px",
       "width": "200px"
+    },
+    "ladder-0": {
+      "top": "177px",
+      "left": "433px",
+      "width": "55px"
+    },
+    "ladder-1": {
+      "top": "177px",
+      "left": "518px",
+      "width": "55px"
+    },
+    "ladder-2": {
+      "top": "177px",
+      "left": "603px",
+      "width": "55px"
     }
   },
   "3": {
+    "hv-0": {
+      "top": "168px",
+      "left": "595px",
+      "width": "80px",
+      "height": "150px"
+    },
     "adapter-0": {
       "top": "545px",
       "left": "20px",
@@ -105,12 +168,27 @@
     "f3plate-0": {
       "top": "536px",
       "left": "20px",
-      "width": "320px"
+      "width": "410px"
     },
     "cooling-0": {
       "top": "345px",
-      "left": "388px",
+      "left": "474px",
       "width": "200px"
+    },
+    "ladder-0": {
+      "top": "177px",
+      "left": "204px",
+      "width": "55px"
+    },
+    "ladder-1": {
+      "top": "177px",
+      "left": "118px",
+      "width": "55px"
+    },
+    "ladder-2": {
+      "top": "177px",
+      "left": "33px",
+      "width": "55px"
     }
   }
 }
